@@ -1,5 +1,6 @@
 Feature: Book appointment on CURA Healthcare Service
 
+  @BookAppointment
   Scenario Outline: Successfully book an appointment and verify it in history
     Given the user is on the CURA Healthcare Service homepage
     When the user books an appointment for a future date "<AppointmentDate>" "<HealthFecility>" "<healthProgram>" <isReadmission> "<Comment>"

@@ -1,7 +1,10 @@
 package utils;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -11,11 +14,12 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
-
 public class WebDriverFactory {
 
   private static Properties properties = new Properties();
   private static ThreadLocal<WebDriver> driverThreadLocal = new ThreadLocal<>();
+
+  static final String downloadFilepath = "src/main/resources/temp";
 
   static {
     try {
@@ -25,11 +29,10 @@ public class WebDriverFactory {
     }
   }
 
-  private WebDriverFactory() {
-  }
+  private WebDriverFactory() {}
 
   public static WebDriver getDriver() {
-    //default chrome if nothing specified
+    // default chrome if nothing specified
     String browserName =
         properties.get("browser") != null ? properties.get("browser").toString() : "chrome";
     if (driverThreadLocal.get() == null) {
@@ -47,23 +50,30 @@ public class WebDriverFactory {
     boolean isHeadless = Boolean.parseBoolean(properties.get("headless").toString());
     switch (browserName.toLowerCase()) {
       case "chrome":
-        System.setProperty("webdriver.chrome.driver",
-            properties.getProperty("webdriver.chrome.driver"));
+        System.setProperty(
+            "webdriver.chrome.driver", properties.getProperty("webdriver.chrome.driver"));
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--start-maximized");
         chromeOptions.addArguments("--disable-notifications");
         chromeOptions.setCapability("acceptInsecureCerts", true);
+        Map<String, Object> prefs = new HashMap<>();
+        String downloadFilepathAbs = new File(downloadFilepath).getAbsolutePath();
+        prefs.put("download.default_directory", downloadFilepathAbs);
+        prefs.put("download.prompt_for_download", false);
+        prefs.put("download.directory_upgrade", true);
+        prefs.put("safebrowsing.enabled", true);
+
+        chromeOptions.setExperimentalOption("prefs", prefs);
 
         if (isHeadless) {
           chromeOptions.addArguments("--headless");
         }
-
         driver = new ChromeDriver(chromeOptions);
         break;
 
       case "firefox":
-        System.setProperty("webdriver.gecko.driver",
-            properties.getProperty("webdriver.gecko.driver"));
+        System.setProperty(
+            "webdriver.gecko.driver", properties.getProperty("webdriver.gecko.driver"));
         FirefoxOptions firefoxOptions = new FirefoxOptions();
 
         if (isHeadless) {
@@ -78,8 +88,8 @@ public class WebDriverFactory {
         break;
 
       case "edge":
-        System.setProperty("webdriver.edge.driver",
-            properties.getProperty("webdriver.edge.driver"));
+        System.setProperty(
+            "webdriver.edge.driver", properties.getProperty("webdriver.edge.driver"));
         EdgeOptions edgeOptions = new EdgeOptions();
         if (isHeadless) {
           edgeOptions.addArguments("headless");
