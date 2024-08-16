@@ -23,4 +23,8 @@ public class HomePage extends BasePage {
   }
 
 
+  public boolean goToWebsite() {
+    driver.get("https://katalon-demo-cura.herokuapp.com/");
+    return makeAppointment.isDisplayed();
+  }
 }

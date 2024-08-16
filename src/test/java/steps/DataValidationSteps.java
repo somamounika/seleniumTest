@@ -9,7 +9,7 @@ import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import pages.DataTableDownloadPage;
 import utils.CsvToObjectTransformator;
-import utils.WebDriverFactory;
+import utils.FileUtils;
 
 public class DataValidationSteps {
 
@@ -18,14 +18,15 @@ public class DataValidationSteps {
 
   @Given("user is on website homepage")
   public void user_on_home_page() {
-    driver = WebDriverFactory.getDriver();
-    driver.get("https://www.lambdatest.com/selenium-playground/table-data-download-demo");
+    driver = Hooks.driver;
+    dataTableDownloadPage = new DataTableDownloadPage(driver);
+    dataTableDownloadPage.goToWebsite();
   }
 
   @When("user download csv file from website")
   public void down_load_csv() {
-    dataTableDownloadPage = new DataTableDownloadPage(driver);
-    CsvToObjectTransformator.deleteAllFilesInTempDirectory();
+
+    FileUtils.deleteAllFilesInTempDirectory();
     dataTableDownloadPage.downloadCsvFile();
   }
 

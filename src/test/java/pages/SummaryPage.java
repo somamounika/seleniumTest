@@ -40,8 +40,8 @@ public class SummaryPage extends BasePage {
     return appointment;
   }
 
-  public void goToHomePage(){
+  public void goToHomePage() {
     waitForElementToBeVisible(goToHomePage);
-    goToHomePage.click();;
+    clickElement(goToHomePage);
   }
 }

@@ -26,8 +26,7 @@ public class DataTableDownloadPage extends BasePage {
   private WebElement nextClick;
 
   public void downloadCsvFile() {
-    waitForElementToBeVisible(csvFileDownLoadTab);
-    csvFileDownLoadTab.click();
+    clickElement(csvFileDownLoadTab);
   }
 
   public List<Candidate> getCandidateFromWebView() {
@@ -60,7 +59,7 @@ public class DataTableDownloadPage extends BasePage {
         }
       }
       if (isNextButtonClickable()) {
-        nextClick.click();
+        clickElement(nextClick);
       }
     }
     return candidates;
@@ -70,5 +69,9 @@ public class DataTableDownloadPage extends BasePage {
     List<WebElement> nextButtons =
         driver.findElements(By.xpath("//a[@class='paginate_button next']"));
     return nextButtons.size() > 0;
+  }
+
+  public void goToWebsite(){
+    driver.get("https://www.lambdatest.com/selenium-playground/table-data-download-demo");
   }
 }

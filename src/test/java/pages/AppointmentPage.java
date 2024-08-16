@@ -8,6 +8,9 @@ import org.openqa.selenium.support.FindBy;
 
 public class AppointmentPage extends BasePage {
 
+  @FindBy(xpath = "//h2")
+  private WebElement titleOfThePage;
+
   @FindBy(xpath = "//select[@name='facility']")
   private WebElement fecilitySelectBx;
 
@@ -34,22 +37,25 @@ public class AppointmentPage extends BasePage {
   }
 
   public void scheduleAppointment(Appointment appointment) {
-    waitForElementToBeVisible(fecilitySelectBx);
-    WebElement selectedFecility = fecilityOptions.stream()
-        .filter(ele -> ele.getText().equalsIgnoreCase(appointment.getFecilityName())).findFirst()
-        .orElseThrow();
-    selectedFecility.click();
+    waitForElementToBeVisible(visitDate);
+    WebElement selectedFacilities =
+        fecilityOptions.stream()
+            .filter(ele -> ele.getText().equalsIgnoreCase(appointment.getFecilityName()))
+            .findFirst()
+            .orElseThrow();
+    clickElement(selectedFacilities);
     waitForElementToBeVisible(readmissionCheckbx);
     if (appointment.isReadmission()) {
-      readmissionCheckbx.click();
+      clickElement(readmissionCheckbx);
     }
-    WebElement selectedHealthCareProgram = healthCareProgramsRadio.stream()
-        .filter(ele -> ele.getAttribute("value").contains(appointment.getHealthProgram()))
-        .findFirst()
-        .orElseThrow();
-    selectedHealthCareProgram.click();
-    visitDate.sendKeys(appointment.getVisitDate());
-    commentsTxtArea.sendKeys(appointment.getComment());
-    bookAppointmentBtn.click();
+    WebElement selectedHealthCareProgram =
+        healthCareProgramsRadio.stream()
+            .filter(ele -> ele.getAttribute("value").contains(appointment.getHealthProgram()))
+            .findFirst()
+            .orElseThrow();
+    clickElement(selectedHealthCareProgram);
+    enterTextToElement(visitDate, appointment.getVisitDate());
+    enterTextToElement(commentsTxtArea, appointment.getComment());
+    clickElement(bookAppointmentBtn);
   }
 }

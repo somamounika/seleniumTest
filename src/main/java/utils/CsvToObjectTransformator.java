@@ -10,8 +10,6 @@ import models.Candidate;
 
 public class CsvToObjectTransformator {
 
-  static String fileName = "Selenium\\ Grid\\ Online\\ Run\\ Selenium\\ Test\\ On\\ Cloud.csv";
-
   public static List<Candidate> getCandidatesFromCSV() {
     File directory = new File(WebDriverFactory.downloadFilepath);
     File[] files = directory.listFiles((dir, name) -> name.endsWith(".csv"));
@@ -24,13 +22,9 @@ public class CsvToObjectTransformator {
     String line;
     List<Candidate> candidates = new ArrayList<>();
     try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
-      // Skip the header line
       br.readLine();
       while ((line = br.readLine()) != null) {
-        // Use regular expression to split data considering possible quotes and commas inside
-        // fields
         String[] data = line.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
-
         Candidate candidate = new Candidate();
         candidate.setFirstName(data[0].replace("\"", ""));
         candidate.setLastName(data[1].replace("\"", ""));
@@ -45,27 +39,5 @@ public class CsvToObjectTransformator {
     }
     System.out.println(candidates);
     return candidates;
-  }
-
-  public static void deleteAllFilesInTempDirectory() {
-    File directory = new File(WebDriverFactory.downloadFilepath);
-    if (directory.exists() && directory.isDirectory()) {
-      File[] files = directory.listFiles();
-      if (files != null) {
-        for (File file : files) {
-          if (file.isFile()) {
-            if (file.delete()) {
-              System.out.println("Deleted file: " + file.getName());
-            } else {
-              System.out.println("Failed to delete file: " + file.getName());
-            }
-          }
-        }
-      } else {
-        System.out.println("The directory is empty or an I/O error occurred.");
-      }
-    } else {
-      System.out.println("Directory does not exist or is not a directory.");
-    }
   }
 }

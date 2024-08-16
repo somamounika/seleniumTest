@@ -22,4 +22,13 @@ public class BasePage {
     wait.until(ExpectedConditions.visibilityOf(element));
   }
 
+  public void clickElement(WebElement element) {
+    wait.until(ExpectedConditions.visibilityOf(element));
+    element.click();
+  }
+
+  public void enterTextToElement(WebElement element, String text) {
+    wait.until(ExpectedConditions.visibilityOf(element));
+    element.sendKeys(text);
+  }
 }

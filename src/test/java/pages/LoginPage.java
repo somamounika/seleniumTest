@@ -33,7 +33,7 @@ public class LoginPage extends BasePage {
     waitForElementToBeVisible(demoPasswordPlaceHolder);
     userNameTxtBx.sendKeys(demoUserNamePlaceHolder.getAttribute("value"));
     passwordTxtBx.sendKeys(demoPasswordPlaceHolder.getAttribute("value"));
-    loginBtn.click();
+    clickElement(loginBtn);
   }
 
 
