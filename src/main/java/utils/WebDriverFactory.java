@@ -37,9 +37,7 @@ public class WebDriverFactory {
         properties.get("browser") != null ? properties.get("browser").toString() : "chrome";
     if (driverThreadLocal.get() == null) {
       synchronized (WebDriverFactory.class) {
-        if (driverThreadLocal.get() == null) {
-          driverThreadLocal.set(createDriver(browserName));
-        }
+        driverThreadLocal.set(createDriver(browserName));
       }
     }
     return driverThreadLocal.get();
@@ -57,16 +55,17 @@ public class WebDriverFactory {
         chromeOptions.addArguments("--disable-notifications");
         chromeOptions.addArguments("--disable-popup-blocking");
         chromeOptions.setCapability("acceptInsecureCerts", true);
-        chromeOptions.addArguments("disable-infobars");
-        chromeOptions.addArguments("--disable-features=PasswordManager,PasswordBreachDetection");
+        chromeOptions.addArguments("--disable-infobars");
         Map<String, Object> prefs = new HashMap<>();
         String downloadFilepathAbs = new File(downloadFilepath).getAbsolutePath();
         prefs.put("download.default_directory", downloadFilepathAbs);
         prefs.put("download.prompt_for_download", false);
         prefs.put("download.directory_upgrade", true);
         prefs.put("safebrowsing.enabled", true);
-        prefs.put("credentials_enable_service", false);
         prefs.put("profile.password_manager_enabled", false);
+        prefs.put("credentials_enable_service", false);
+        prefs.put("password_manager_enabled", false);
+        chromeOptions.addArguments("--incognito");
         chromeOptions.setExperimentalOption("prefs", prefs);
         if (isHeadless) {
           chromeOptions.addArguments("--headless");

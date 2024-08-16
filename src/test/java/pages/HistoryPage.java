@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class SummaryPage extends BasePage {
+public class HistoryPage extends BasePage {
 
   @FindBy(xpath = "//p[@id='facility']")
   private WebElement fecilityNameLbl;
@@ -16,7 +16,7 @@ public class SummaryPage extends BasePage {
   @FindBy(xpath = "//p[@id='program']")
   private WebElement programLbl;
 
-  @FindBy(xpath = "//p[@id='visit_date']")
+  @FindBy(xpath = "//div[@class='panel panel-info']/div[@class='panel-heading']")
   private WebElement visitDate;
 
   @FindBy(xpath = "//p[@id='comment']")
@@ -25,12 +25,20 @@ public class SummaryPage extends BasePage {
   @FindBy(xpath = "//a[@class='btn btn-default']")
   private WebElement goToHomePage;
 
-  public SummaryPage(WebDriver driver) {
+  @FindBy(xpath = "//a[@id='menu-toggle']")
+  private WebElement menuLink;
+
+  @FindBy(xpath = "//a[text()='History']")
+  private WebElement historyMenu;
+
+  public HistoryPage(WebDriver driver) {
     super(driver);
   }
 
   public Appointment getAppointmentDataFromSummaryPage() {
     waitForElementToBeVisible(programLbl);
+    clickElement(menuLink);
+    clickElement(historyMenu);
     Appointment appointment = new Appointment();
     appointment.setHealthProgram(programLbl.getText());
     appointment.setReadmission(readmissionLbl.getText().equals("Yes"));

@@ -1,6 +1,11 @@
 # Default ignored files
 /shelf/
 .idea/
-target/
 *.iml
+*.xml
+temp/
 *.pb
+*.class
+*.txt
+*.lst
+/target

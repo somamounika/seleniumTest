@@ -11,8 +11,7 @@ import org.openqa.selenium.WebDriver;
 import pages.AppointmentPage;
 import pages.HomePage;
 import pages.LoginPage;
-import pages.SummaryPage;
-import utils.WebDriverFactory;
+import pages.HistoryPage;
 
 public class BookAppointmentSteps {
 
@@ -20,7 +19,7 @@ public class BookAppointmentSteps {
   HomePage homePage;
   LoginPage loginPage;
   AppointmentPage appointmentPage;
-  SummaryPage summaryPage;
+  HistoryPage historyPage;
   Appointment appointmentTestData;
 
   @Given("the user is on the CURA Healthcare Service homepage")
@@ -46,8 +45,8 @@ public class BookAppointmentSteps {
 
   @Then("the appointment should be listed with correct details in the history")
   public void the_appointment_should_be_listed_with_correct_details_in_the_history() {
-    summaryPage = new SummaryPage(driver);
-    Appointment actualAppointment = summaryPage.getAppointmentDataFromSummaryPage();
+    historyPage = new HistoryPage(driver);
+    Appointment actualAppointment = historyPage.getAppointmentDataFromSummaryPage();
     Assert.assertEquals(
         "fecilityName should match",
         appointmentTestData.getFecilityName(),
@@ -68,9 +67,11 @@ public class BookAppointmentSteps {
         "comment should match", appointmentTestData.getComment(), actualAppointment.getComment());
   }
 
+
+
   @And("the user logs out from the application")
   public void the_user_logs_out_from_the_application() {
-    summaryPage.goToHomePage();
+    historyPage.goToHomePage();
     Assert.assertEquals(
         "home page should be visible", homePage.verifyAppointmentHomePageAvailable(), true);
   }
